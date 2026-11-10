@@ -1,4 +1,4 @@
-# mission1 - 개발자용 작업실 꾸미기
+# mission1 
 
 ## 1) 프로젝트 개요
 터미널(CLI), Docker, Git/GitHub로 개발 작업 환경을 직접 구성하고, 터미널에 입력한 명령과 출력 결과로 검증한다. 출력 전체는 `logs/`에 저장했다.
@@ -11,18 +11,6 @@
 | Docker | Docker Desktop 4.98.0 / Docker Engine 29.9.2 |
 | Git | git version 2.56.0.windows.2 |
 
-## 3) 수행 항목 체크리스트
-- [x] 터미널: 작업 폴더 구성, 위치/목록/이동/생성/복사/이름변경/삭제/내용확인/빈 파일
-- [x] 권한: 파일 1개, 디렉토리 1개 변경 전/후
-- [x] Docker: 설치·점검, 기본 운영 명령, `hello-world`, `ubuntu` 컨테이너
-- [x] Dockerfile: 커스텀 이미지 빌드·실행
-- [x] 포트: 포트 매핑 접속 (8080, 8081)
-- [x] 마운트: 바인드 마운트 반영
-- [x] 볼륨: Docker 볼륨 영속성
-- [x] Git: 사용자 정보·기본 브랜치 설정, `git config --list`
-- [x] GitHub: 저장소 `clone`, `commit`, `push`
-- [ ] **미수행**: VSCode에서 GitHub 로그인·저장소 연동 증거(스크린샷)
-- [ ] **미수행**: 브라우저 접속 화면(주소창 포함) 스크린샷 → `curl` 응답으로 대체
 
 ## 4) 검증 방법과 결과
 | 항목 | 입력한 명령 | 확인 내용 | 로그 |
@@ -42,20 +30,3 @@
 
 - **컨테이너 종료/유지**: `docker run ... bash -c "..."`는 명령이 끝나면 컨테이너도 종료(`Exited (0)`)된다. `sleep infinity`로 실행한 컨테이너는 계속 `Up`이고, `docker exec`는 그 안에 명령을 추가로 실행하므로 끝나도 컨테이너가 유지된다.
 - **Dockerfile 커스텀**: 기존 베이스 `nginx:alpine`에 `LABEL`(이미지 정보), `ENV APP_ENV=dev`(설정 분리), `COPY site/ ...`(기본 페이지 교체), `HEALTHCHECK`(응답 점검)를 추가했다.
-
-## 5) 트러블슈팅
-1. **`docker` 명령이 인식되지 않음**
-   - 문제: PowerShell에서 `docker info` 실행 시 "'docker' 용어가 cmdlet, 함수, 스크립트 파일 또는 실행할 수 있는 프로그램 이름으로 인식되지 않습니다".
-   - 원인 가설: Docker가 설치되지 않았거나 PATH에 없음.
-   - 확인: `C:\Program Files\Docker` 폴더와 Docker 프로세스가 없었다.
-   - 해결: Docker Desktop을 설치하고, 열려 있던 터미널을 닫고 새로 열어 다시 실행.
-2. **Docker Desktop 실행 시 "WSL not installed" 오류**
-   - 문제: 설치 후 재부팅까지 했는데도 Docker Desktop이 "WSL not installed" 오류를 표시함.
-   - 원인 가설: Docker Desktop은 WSL2 위에서 동작하는데 WSL 자체가 설치되지 않음.
-   - 확인: 오류 창의 안내 문구(`wsl --install`을 관리자 PowerShell에서 실행 후 재부팅)와 `wsl --list --verbose`로 설치 상태 확인.
-   - 해결: 관리자 PowerShell에서 `wsl --install` 실행 후 재부팅, Docker Desktop 재실행. 이후 `docker --version`과 `docker info`가 정상 출력됨.
-3. **터미널이 작업 폴더가 아닌 다른 폴더에서 시작됨**
-   - 문제: 새 터미널을 열면 `mission1`이 아닌 다른 폴더에서 시작되어 `git` 작업이 엉뚱한 위치에 적용될 수 있었음.
-   - 원인 가설: 터미널의 시작 위치가 작업 폴더로 고정되어 있음.
-   - 확인: `pwd`로 현재 위치를 확인.
-   - 해결: 작업 전에 `cd`로 `mission1`로 이동하고 `pwd`로 확인한 뒤 작업.
