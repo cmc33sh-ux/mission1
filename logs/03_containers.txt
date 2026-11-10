@@ -1,0 +1,109 @@
+$ docker run --rm hello-world
+Unable to find image 'hello-world:latest' locally
+latest: Pulling from library/hello-world
+4f55086f7dd0: Pulling fs layer
+4f55086f7dd0: Download complete
+4f55086f7dd0: Pull complete
+d5e71e642bf5: Download complete
+Digest: sha256:c567b231f65614688711a75f31518a064258a51d442117a3e771a3a8fdba78ef
+Status: Downloaded newer image for hello-world:latest
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+
+### ubuntu: 일회성 실행 후 종료 (메인 프로세스가 끝나면 컨테이너도 종료)
+$ docker run --name ubuntu-once ubuntu bash -c ls / && echo hello-from-ubuntu
+Unable to find image 'ubuntu:latest' locally
+latest: Pulling from library/ubuntu
+f3f25b84a7d7: Pulling fs layer
+edafa32f5d9e: Pulling fs layer
+f3f25b84a7d7: Download complete
+21594acc2d8b: Download complete
+edafa32f5d9e: Download complete
+edafa32f5d9e: Pull complete
+f3f25b84a7d7: Pull complete
+Digest: sha256:6a06111c3b0a8600feadb270aec771dc239bf407b25625f93f44ab00e11f4d3c
+Status: Downloaded newer image for ubuntu:latest
+bin
+boot
+dev
+etc
+home
+lib
+lib64
+media
+mnt
+opt
+proc
+root
+run
+sbin
+srv
+sys
+tmp
+usr
+var
+hello-from-ubuntu
+
+$ docker ps -a --filter name=ubuntu-once
+CONTAINER ID   IMAGE     COMMAND                   CREATED        STATUS                              PORTS     NAMES
+78b0d02891b7   ubuntu    "bash -c 'ls / && ec…"   1 second ago   Exited (0) Less than a second ago             ubuntu-once
+
+### ubuntu: 백그라운드 유지 + exec 로 명령 실행 (exec 가 끝나도 컨테이너는 유지)
+$ docker run -d --name ubuntu-keep ubuntu sleep infinity
+4b5fa9e8bf3fd3571535037657a5636a7774a9024a0bc5dfa4d160389ce0ef23
+
+$ docker exec ubuntu-keep ls /
+bin
+boot
+dev
+etc
+home
+lib
+lib64
+media
+mnt
+opt
+proc
+root
+run
+sbin
+srv
+sys
+tmp
+usr
+var
+
+$ docker exec ubuntu-keep echo hello-exec
+hello-exec
+
+$ docker ps --filter name=ubuntu-keep
+CONTAINER ID   IMAGE     COMMAND            CREATED        STATUS        PORTS     NAMES
+4b5fa9e8bf3f   ubuntu    "sleep infinity"   1 second ago   Up 1 second             ubuntu-keep
+
+$ docker rm -f ubuntu-once ubuntu-keep
+ubuntu-once
+ubuntu-keep
+
+$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
