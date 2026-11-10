@@ -1,46 +1,65 @@
 ### 환경
 $ uname -a
-Linux b1bf1bca6b08 6.18.58.1-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Tue Oct 27 00:24:11 UTC 2026 x86_64 GNU/Linux
-
-$ whoami
-nobody
+Linux SMbook 6.18.58.1-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Tue Oct 27 00:24:11 UTC 2026 x86_64 GNU/Linux
 
 $ echo $SHELL; bash --version | head -1
-/usr/sbin/nologin
+/bin/bash
 GNU bash, version 5.3.9(1)-release (x86_64-pc-linux-gnu)
 
-### 터미널 기본 조작
+### 1. 현재 위치 확인 / 목록 확인(숨김 파일 포함)
 $ pwd
-/tmp/practice_work
-
-$ mkdir practice && cd practice && pwd
-/tmp/practice_work/practice
-
-$ touch note.txt && echo 'hello linux' > note.txt
+/root
 
 $ ls
-note.txt
+
+$ ls -la
+total 24
+drwx------  4 root root 4096 Nov 10 21:54 .
+drwxr-xr-x 19 root root 4096 Nov 10 21:54 ..
+-rw-r--r--  1 root root 3106 Apr 20  2026 .bashrc
+drwx------  2 root root 4096 Nov 10 21:39 .cache
+-rw-r--r--  1 root root    0 Nov 10 21:39 .motd_shown
+-rw-r--r--  1 root root  132 Apr 20  2026 .profile
+drwx------  2 root root 4096 Aug 27 23:11 .ssh
+
+### 2. 작업 디렉토리 만들기 / 이동
+$ mkdir -p ~/practice
+
+$ cd ~/practice && pwd
+/root/practice
+
+$ cd .. && pwd
+/root
+
+### 3. 파일 만들기 / 내용 확인
+$ touch empty.txt && ls -l empty.txt
+-rw-r--r-- 1 root root 0 Nov 10 21:54 empty.txt
+
+$ echo 'hello linux' > note.txt && cat note.txt
+hello linux
 
 $ ls -la
 total 12
-drwxr-xr-x 2 nobody nogroup 4096 Nov 10 12:40 .
-drwxr-xr-x 3 nobody nogroup 4096 Nov 10 12:40 ..
--rw-r--r-- 1 nobody nogroup   12 Nov 10 12:40 note.txt
+drwxr-xr-x 2 root root 4096 Nov 10 21:54 .
+drwx------ 5 root root 4096 Nov 10 21:54 ..
+-rw-r--r-- 1 root root    0 Nov 10 21:54 empty.txt
+-rw-r--r-- 1 root root   12 Nov 10 21:54 note.txt
 
-$ cat note.txt
-hello linux
-
+### 4. 복사 / 이동·이름 변경 / 삭제
 $ cp note.txt copy.txt && ls
 copy.txt
+empty.txt
 note.txt
 
 $ mv copy.txt renamed.txt && ls
+empty.txt
 note.txt
 renamed.txt
 
 $ mkdir docs && mv renamed.txt docs/ && ls -R
 .:
 docs
+empty.txt
 note.txt
 
 ./docs:
@@ -49,70 +68,58 @@ renamed.txt
 $ rm docs/renamed.txt && ls -R
 .:
 docs
+empty.txt
 note.txt
 
 ./docs:
 
 $ rmdir docs && ls
+empty.txt
 note.txt
 
-$ touch empty.txt && ls -l empty.txt
--rw-r--r-- 1 nobody nogroup 0 Nov 10 12:40 empty.txt
-
-### 상대 경로 / 절대 경로
-$ mkdir -p a/b && cd a/b && pwd && cd ../.. && pwd
-/tmp/practice_work/practice/a/b
-/tmp/practice_work/practice
-
-$ cat /tmp/practice_work/practice/note.txt
+### 5. 절대 경로 / 상대 경로
+$ cat /root/practice/note.txt
 hello linux
 
 $ cat ./note.txt
 hello linux
 
-### 권한 실습: 파일 (변경 전/후)
-$ ls -l note.txt
--rw-r--r-- 1 nobody nogroup 12 Nov 10 12:40 note.txt
+$ mkdir -p a/b && cd a/b && pwd && cd ../.. && pwd
+/root/practice/a/b
+/root/practice
 
-$ chmod 644 note.txt && ls -l note.txt
--rw-r--r-- 1 nobody nogroup 12 Nov 10 12:40 note.txt
+### 6. 권한 실습: 파일 (변경 전/후)
+$ ls -l note.txt
+-rw-r--r-- 1 root root 12 Nov 10 21:54 note.txt
 
 $ chmod 755 note.txt && ls -l note.txt
--rwxr-xr-x 1 nobody nogroup 12 Nov 10 12:40 note.txt
+-rwxr-xr-x 1 root root 12 Nov 10 21:54 note.txt
+
+$ chmod 644 note.txt && ls -l note.txt
+-rw-r--r-- 1 root root 12 Nov 10 21:54 note.txt
 
 $ chmod 600 note.txt && ls -l note.txt
--rw------- 1 nobody nogroup 12 Nov 10 12:40 note.txt
+-rw------- 1 root root 12 Nov 10 21:54 note.txt
 
-$ chmod u-w note.txt && ls -l note.txt
--r-------- 1 nobody nogroup 12 Nov 10 12:40 note.txt
-
-$ echo test >> note.txt
-/s/terminal_practice.sh: line 1: note.txt: Permission denied
-
-$ chmod u+w note.txt && echo test >> note.txt && cat note.txt
-hello linux
-test
-
-### 권한 실습: 디렉토리 (변경 전/후)
+### 7. 권한 실습: 디렉토리 (변경 전/후)
 $ ls -ld a
-drwxr-xr-x 3 nobody nogroup 4096 Nov 10 12:40 a
-
-$ chmod 755 a && ls -ld a
-drwxr-xr-x 3 nobody nogroup 4096 Nov 10 12:40 a
+drwxr-xr-x 3 root root 4096 Nov 10 21:54 a
 
 $ chmod 700 a && ls -ld a
-drwx------ 3 nobody nogroup 4096 Nov 10 12:40 a
+drwx------ 3 root root 4096 Nov 10 21:54 a
 
-$ chmod 000 a && ls -ld a
-d--------- 3 nobody nogroup 4096 Nov 10 12:40 a
+$ chmod 755 a && ls -ld a
+drwxr-xr-x 3 root root 4096 Nov 10 21:54 a
 
-$ ls a
-ls: cannot open directory 'a': Permission denied
+### 최종 구조
+$ ls -R ~/practice
+/root/practice:
+a
+empty.txt
+note.txt
 
-$ chmod 755 a && ls a
+/root/practice/a:
 b
 
-### 정리
-$ rm -rf /tmp/practice_work && ls -d /tmp/practice_work
-ls: cannot access '/tmp/practice_work': No such file or directory
+/root/practice/a/b:
 

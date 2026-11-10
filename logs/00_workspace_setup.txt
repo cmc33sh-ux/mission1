@@ -1,0 +1,41 @@
+### 작업 폴더 상태 확인 (바탕화면의 mission1)
+$ pwd
+/c/Users/user/Desktop
+
+$ ls -d mission1
+mission1
+
+$ pwd
+/c/Users/user/Desktop/mission1
+
+$ ls -la
+total 41
+drwxr-xr-x 1 user 197121     0 Nov 10 21:54 .
+drwxr-xr-x 1 user 197121     0 Nov 10 21:27 ..
+drwxr-xr-x 1 user 197121     0 Nov 10 21:54 .git
+-rw-r--r-- 1 user 197121   559 Nov 10 21:40 Dockerfile
+-rw-r--r-- 1 user 197121 15212 Nov 10 21:54 README.md
+drwxr-xr-x 1 user 197121     0 Nov 10 21:41 bind-demo
+-rw-r--r-- 1 user 197121   829 Nov 10 21:12 docker_log.txt
+drwxr-xr-x 1 user 197121     0 Nov 10 21:55 logs
+drwxr-xr-x 1 user 197121     0 Nov 10 21:40 site
+-rw-r--r-- 1 user 197121     0 Nov 10 21:12 test.txt
+
+$ git remote -v
+origin	https://github.com/cmc33sh-ux/mission1.git (fetch)
+origin	https://github.com/cmc33sh-ux/mission1.git (push)
+
+$ git branch --show-current
+main
+
+$ git log --oneline
+9d50766 Add git config log and write README technical document
+ba1c508 Add custom nginx Dockerfile, port mapping, bind mount and volume logs
+3a00bae Add terminal commands and permission practice log
+b6ddc54 Add hello-world and ubuntu container practice log
+6cbc9cb Add docker basic operations log (images, ps, logs, stats)
+0a98b2e Add docker version and info check log
+d4d3f3d add docker log
+1b77ca0 첫번째 커밋
+dd1ec5a Initial commit
+
