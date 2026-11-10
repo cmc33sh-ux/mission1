@@ -1,0 +1,33 @@
+$ git config --global init.defaultBranch main
+
+$ git config --list   # user.email 값은 개인정보 보호를 위해 마스킹함
+diff.astextplain.textconv=astextplain
+filter.lfs.clean=git-lfs clean -- %f
+filter.lfs.smudge=git-lfs smudge -- %f
+filter.lfs.process=git-lfs filter-process
+filter.lfs.required=true
+http.sslbackend=schannel
+core.autocrlf=true
+core.fscache=true
+core.symlinks=false
+pull.rebase=false
+init.defaultbranch=master
+user.name=Ted
+user.email=***masked***
+init.defaultbranch=main
+core.repositoryformatversion=0
+core.filemode=false
+core.bare=false
+core.logallrefupdates=true
+core.symlinks=false
+core.ignorecase=true
+remote.origin.url=https://github.com/cmc33sh-ux/mission1.git
+remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+branch.main.remote=origin
+branch.main.merge=refs/heads/main
+
+$ git --version
+git version 2.56.0.windows.2
+
+$ git branch --show-current
+main
