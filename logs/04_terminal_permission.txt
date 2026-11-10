@@ -1,0 +1,118 @@
+### 환경
+$ uname -a
+Linux b1bf1bca6b08 6.18.58.1-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Tue Oct 27 00:24:11 UTC 2026 x86_64 GNU/Linux
+
+$ whoami
+nobody
+
+$ echo $SHELL; bash --version | head -1
+/usr/sbin/nologin
+GNU bash, version 5.3.9(1)-release (x86_64-pc-linux-gnu)
+
+### 터미널 기본 조작
+$ pwd
+/tmp/practice_work
+
+$ mkdir practice && cd practice && pwd
+/tmp/practice_work/practice
+
+$ touch note.txt && echo 'hello linux' > note.txt
+
+$ ls
+note.txt
+
+$ ls -la
+total 12
+drwxr-xr-x 2 nobody nogroup 4096 Nov 10 12:40 .
+drwxr-xr-x 3 nobody nogroup 4096 Nov 10 12:40 ..
+-rw-r--r-- 1 nobody nogroup   12 Nov 10 12:40 note.txt
+
+$ cat note.txt
+hello linux
+
+$ cp note.txt copy.txt && ls
+copy.txt
+note.txt
+
+$ mv copy.txt renamed.txt && ls
+note.txt
+renamed.txt
+
+$ mkdir docs && mv renamed.txt docs/ && ls -R
+.:
+docs
+note.txt
+
+./docs:
+renamed.txt
+
+$ rm docs/renamed.txt && ls -R
+.:
+docs
+note.txt
+
+./docs:
+
+$ rmdir docs && ls
+note.txt
+
+$ touch empty.txt && ls -l empty.txt
+-rw-r--r-- 1 nobody nogroup 0 Nov 10 12:40 empty.txt
+
+### 상대 경로 / 절대 경로
+$ mkdir -p a/b && cd a/b && pwd && cd ../.. && pwd
+/tmp/practice_work/practice/a/b
+/tmp/practice_work/practice
+
+$ cat /tmp/practice_work/practice/note.txt
+hello linux
+
+$ cat ./note.txt
+hello linux
+
+### 권한 실습: 파일 (변경 전/후)
+$ ls -l note.txt
+-rw-r--r-- 1 nobody nogroup 12 Nov 10 12:40 note.txt
+
+$ chmod 644 note.txt && ls -l note.txt
+-rw-r--r-- 1 nobody nogroup 12 Nov 10 12:40 note.txt
+
+$ chmod 755 note.txt && ls -l note.txt
+-rwxr-xr-x 1 nobody nogroup 12 Nov 10 12:40 note.txt
+
+$ chmod 600 note.txt && ls -l note.txt
+-rw------- 1 nobody nogroup 12 Nov 10 12:40 note.txt
+
+$ chmod u-w note.txt && ls -l note.txt
+-r-------- 1 nobody nogroup 12 Nov 10 12:40 note.txt
+
+$ echo test >> note.txt
+/s/terminal_practice.sh: line 1: note.txt: Permission denied
+
+$ chmod u+w note.txt && echo test >> note.txt && cat note.txt
+hello linux
+test
+
+### 권한 실습: 디렉토리 (변경 전/후)
+$ ls -ld a
+drwxr-xr-x 3 nobody nogroup 4096 Nov 10 12:40 a
+
+$ chmod 755 a && ls -ld a
+drwxr-xr-x 3 nobody nogroup 4096 Nov 10 12:40 a
+
+$ chmod 700 a && ls -ld a
+drwx------ 3 nobody nogroup 4096 Nov 10 12:40 a
+
+$ chmod 000 a && ls -ld a
+d--------- 3 nobody nogroup 4096 Nov 10 12:40 a
+
+$ ls a
+ls: cannot open directory 'a': Permission denied
+
+$ chmod 755 a && ls a
+b
+
+### 정리
+$ rm -rf /tmp/practice_work && ls -d /tmp/practice_work
+ls: cannot access '/tmp/practice_work': No such file or directory
+
