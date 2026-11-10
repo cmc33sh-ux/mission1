@@ -1,0 +1,83 @@
+### A. 바인드 마운트: 호스트 폴더를 컨테이너 웹 루트에 연결
+$ cat bind-demo/index.html
+<h1>bind mount BEFORE</h1>
+
+$ docker run -d --name bind-test -p 8090:80 -v C:\Users\user\Desktop\mission1\bind-demo:/usr/share/nginx/html:ro nginx:alpine
+a1e36dbb4a1207e53146938132741d3c72cb69febf93cf93961c04bfcef37c7e
+
+### 변경 전 응답
+$ curl -s http://localhost:8090
+<h1>bind mount BEFORE</h1>
+
+### 호스트에서 파일 수정 (컨테이너 재시작/재빌드 없음)
+$ cat bind-demo/index.html
+<h1>bind mount AFTER (edited on host)</h1>
+
+### 변경 후 응답
+$ curl -s http://localhost:8090
+<h1>bind mount AFTER (edited on host)</h1>
+
+$ docker rm -f bind-test
+bind-test
+
+
+### B. Docker 볼륨 영속성
+$ docker volume create mydata
+mydata
+
+$ docker run -d --name vol-test -v mydata:/data ubuntu sleep infinity
+2c336afb31c5eb188bd39747a571c1419eaf3c005789d6902314d608c835933d
+
+$ docker exec vol-test bash -c echo 'hi from volume' > /data/hello.txt && cat /data/hello.txt
+hi from volume
+
+$ docker volume ls
+DRIVER    VOLUME NAME
+local     mydata
+
+### 컨테이너 삭제 (볼륨은 남음)
+$ docker rm -f vol-test
+vol-test
+
+$ docker ps -a --filter name=vol-test
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+$ docker volume ls
+DRIVER    VOLUME NAME
+local     mydata
+
+### 새 컨테이너에 같은 볼륨 연결 후 데이터 확인
+$ docker run -d --name vol-test2 -v mydata:/data ubuntu sleep infinity
+be786e5d0b68210a6db86f5e2d4ce715aec6da64c4530f6f138585af68096dbc
+
+$ docker exec vol-test2 cat /data/hello.txt
+hi from volume
+
+### 대조: 볼륨 없이 쓴 데이터는 컨테이너와 함께 사라짐
+$ docker run -d --name no-vol ubuntu sleep infinity
+92768b5b73af6a24dacc4acbca7bb54d6f44d5ebfbd6b61a2663e39d4f157a74
+
+$ docker exec no-vol bash -c echo temp > /tmp/temp.txt && cat /tmp/temp.txt
+temp
+
+$ docker rm -f no-vol
+no-vol
+
+$ docker run --rm ubuntu bash -c ls /tmp/temp.txt
+ls: cannot access '/tmp/temp.txt': No such file or directory
+
+### 정리
+$ docker rm -f vol-test2 web-8080 web-8081
+vol-test2
+web-8080
+web-8081
+
+$ docker volume rm mydata
+mydata
+
+$ docker volume ls
+DRIVER    VOLUME NAME
+
+$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
