@@ -28,5 +28,9 @@
 | Git 설정 | `git config --global init.defaultBranch main`, `git config --list` | `user.name`, `init.defaultbranch=main` 확인 (이메일은 마스킹) | [07](logs/07_git_config.txt) |
 | GitHub | `git clone`, `git remote -v`, `git push origin main` | 원격 저장소 `origin` 연결과 push 반영 | [00](logs/00_workspace_setup.txt) |
 
+- **포트 매핑 접속 화면** (브라우저, 주소창에 포트 표시): `localhost:8080`과 `localhost:8081` 모두 `Hello World` 페이지가 열린다.
+
+  ![localhost:8080](screenshots/port-8080.png)
+  ![localhost:8081](screenshots/port-8081.png)
 - **컨테이너 종료/유지**: `docker run ... bash -c "..."`는 명령이 끝나면 컨테이너도 종료(`Exited (0)`)된다. `sleep infinity`로 실행한 컨테이너는 계속 `Up`이고, `docker exec`는 그 안에 명령을 추가로 실행하므로 끝나도 컨테이너가 유지된다.
 - **Dockerfile 커스텀**: 기존 베이스 `nginx:alpine`에 `LABEL`(이미지 정보), `ENV APP_ENV=dev`(설정 분리), `COPY site/ ...`(기본 페이지 교체), `HEALTHCHECK`(응답 점검)를 추가했다.
